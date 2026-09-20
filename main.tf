@@ -13,5 +13,15 @@ resource "msgraph_resource" "resources" {
   retry                   = each.value.retry
   update_method           = each.value.update_method
   update_query_parameters = each.value.update_query_parameters
+
+  dynamic "timeouts" {
+    for_each = each.value.timeouts != null ? [each.value.timeouts] : []
+    content {
+      create = timeouts.value.create
+      delete = timeouts.value.delete
+      read   = timeouts.value.read
+      update = timeouts.value.update
+    }
+  }
 }
 
